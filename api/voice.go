@@ -6,7 +6,7 @@ import (
 )
 
 type VoiceInterface interface {
-	VoiceList(ctx context.Context) (*model.VoiceListResponse, error)
+	VoiceList(ctx context.Context) (*[]model.VoiceListResponse, error)
 }
 
 func (az *AzureTTSClient) VoiceList(ctx context.Context) (*[]model.VoiceListResponse, error) {
