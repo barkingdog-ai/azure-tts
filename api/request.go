@@ -55,7 +55,7 @@ func (az *AzureTTSClient) newRequest(ctx context.Context, method, path string, p
 		return nil, err
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", az.AccessToken))
-
+	req.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
 	return req, nil
 }
 func (az *AzureTTSClient) performRequest(req *http.Request) (*http.Response, error) {
@@ -133,6 +133,7 @@ func getResponseObject(rsp *http.Response, v interface{}) error {
 		return fmt.Errorf("invalid json resp: %w", err)
 	}
 	return nil
+
 }
 
 // voiceXML renders the XML payload for the TTS api.

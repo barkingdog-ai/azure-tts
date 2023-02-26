@@ -11,8 +11,8 @@ type VoiceListResponse struct {
 	Name            string    `json:"Name"`
 	LocalName       string    `json:"LocalName"`
 	ShortName       string    `json:"ShortName"`
-	Gender          Gender    `json:"Gender"`
-	Locale          Locale    `json:"Locale"`
+	Gender          string    `json:"Gender"`
+	Locale          string    `json:"Locale"`
 	LocaleName      string    `json:"LocaleName"`
 	SampleRateHertz string    `json:"SampleRateHertz"`
 	VoiceType       voiceType `json:"VoiceType"`
