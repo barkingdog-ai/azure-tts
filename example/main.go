@@ -18,7 +18,7 @@ func main() {
 		exit(fmt.Errorf("Please set your AZURE_KEY environment variable"))
 	}
 
-	az, err := tts.NewClient(apiKey, model.RegionEastUS)
+	az, err := tts.NewClient(apiKey, model.RegionEastAsia)
 	if err != nil {
 		exit(fmt.Errorf("failed to create new client, received %v", err))
 	}
@@ -26,13 +26,17 @@ func main() {
 
 	// Digitize a text string using the enUS locale, female voice and specify the
 	// audio format of a 16Khz, 32kbit mp3 file.
+
 	ctx := context.Background()
+
 	req := model.TextToSpeechRequest{
 		SpeechText:  "Hello world",
 		Locale:      model.LocaleZhTW,
 		Gender:      model.GenderFemale,
 		VoiceName:   "en-US-ChristopherNeural",
 		AudioOutput: model.Audio16khz32kbitrateMonoMp3,
+		Rate:        "1.21",
+		Pitch:       "2",
 	}
 	b, err := az.TextToSpeech(ctx, req)
 
@@ -41,10 +45,14 @@ func main() {
 	}
 
 	// send results to disk.
-	err = ioutil.WriteFile("audio.mp3", b, 0644)
+	err = ioutil.WriteFile("audio1.mp3", b, 0644)
 	if err != nil {
 		exit(fmt.Errorf("unable to write file, received %v", err))
 	}
+	/*
+		data, err := az.VoiceList(ctx)
+		fmt.Println("data", data)
+	*/
 }
 
 func exit(err error) {

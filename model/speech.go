@@ -7,6 +7,8 @@ type TextToSpeechRequest struct {
 	Gender      Gender
 	VoiceName   string
 	AudioOutput AudioOutput
+	Rate        string
+	Pitch       string
 }
 
 type TextToSpeechResponse struct {

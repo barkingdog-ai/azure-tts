@@ -13,7 +13,7 @@ import (
 
 // TTSApiXMLPayload templates the payload required for API.
 // See: https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
-const ttsApiXMLPayload = "<speak version='1.0' xml:lang='%s'><voice xml:lang='%s' xml:gender='%s' name='%s'>%s</voice></speak>"
+const ttsApiXMLPayload = "<speak version='1.0' xml:lang='%s'><voice xml:lang='%s' xml:gender='%s' name='%s'><prosody rate='%s' pitch='%s'>%s</prosody></voice></speak>"
 
 func (az *AzureTTSClient) newTokenRequest(ctx context.Context, method, path string, payload interface{}) (*http.Request, error) {
 	bodyReader, err := jsonBodyReader(payload)
@@ -138,6 +138,6 @@ func getResponseObject(rsp *http.Response, v interface{}) error {
 
 // voiceXML renders the XML payload for the TTS api.
 // For API reference see https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
-func voiceXML(speechText, description string, locale model.Locale, gender model.Gender) string {
-	return fmt.Sprintf(ttsApiXMLPayload, locale, locale, gender, description, speechText)
+func voiceXML(speechText, description string, locale model.Locale, gender model.Gender, rate string, pitch string) string {
+	return fmt.Sprintf(ttsApiXMLPayload, locale, locale, gender, description, rate, pitch, speechText)
 }
