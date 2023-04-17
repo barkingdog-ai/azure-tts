@@ -16,7 +16,7 @@ func (az *AzureTTSClient) RefreshToken(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	resp, err := az.performRequest(req)
+	resp, err := az.performRequest2(req)
 	if err != nil {
 		return err
 	}

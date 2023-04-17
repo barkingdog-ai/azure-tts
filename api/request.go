@@ -58,6 +58,30 @@ func (az *AzureTTSClient) newRequest(ctx context.Context, method, path string, p
 	req.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
 	return req, nil
 }
+func (az AzureTTSClient) performRequest2(req2 *http.Request) (*http.Response, error) {
+
+	// Create a new HTTP client and request
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", "https://eastasia.api.cognitive.microsoft.com/sts/v1.0/issueToken", bytes.NewBuffer([]byte("")))
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	// Add required headers
+	req.Header.Add("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
+	req.Header.Add("Content-Length", "0")
+	req2 = req // copy --> TODO: fix this
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	if err := checkForSuccess(resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (az *AzureTTSClient) performRequest(req *http.Request) (*http.Response, error) {
 	resp, err := az.HttpClient.Do(req)
 	if err != nil {
