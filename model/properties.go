@@ -14,6 +14,7 @@ const (
 	AudioRAW8Bit8kHzMonoMulaw
 	AudioRAW16Bit16kHzMonoMulaw
 	AudioRAW24khz16bitMonoPcm
+	AudioRAW22050hz16bitMonoPcm
 	AudioSsml16khz16bitMonoTts
 	Audio16khz16kbpsMonoSiren
 	Audio16khz32kbitrateMonoMp3
@@ -31,6 +32,7 @@ func (a AudioOutput) String() string {
 		"raw-8khz-8bit-mono-mulaw",
 		"raw-16khz-16bit-mono-pcm",
 		"raw-24khz-16bit-mono-pcm",
+		"raw-22050hz-16bit-mono-pcm",
 		"ssml-16khz-16bit-mono-tts",
 		"audio-16khz-16kbps-mono-siren",
 		"audio-16khz-32kbitrate-mono-mp3",
