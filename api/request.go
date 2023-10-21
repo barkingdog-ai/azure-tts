@@ -64,7 +64,6 @@ func (az AzureTTSClient) performRequest2(req2 *http.Request) (*http.Response, er
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", "https://eastasia.api.cognitive.microsoft.com/sts/v1.0/issueToken", bytes.NewBuffer([]byte("")))
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 	// Add required headers
@@ -73,7 +72,6 @@ func (az AzureTTSClient) performRequest2(req2 *http.Request) (*http.Response, er
 	req2 = req // copy --> TODO: fix this
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 	if err := checkForSuccess(resp); err != nil {

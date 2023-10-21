@@ -25,7 +25,6 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context, request model.TextTo
 		utils.ConvertFloat32ToString((rate-1)*100)+"%",
 		utils.ConvertFloat32ToString((pitch-1)*50)+"%")
 
-	fmt.Println("voiceXML", v)
 	req, err := az.newTTSRequest(ctx, "POST", az.TextToSpeechURL, bytes.NewBufferString(v), model.Audio16khz32kbitrateMonoMp3)
 	if err != nil {
 		return nil, fmt.Errorf("tts request error %v", err)
