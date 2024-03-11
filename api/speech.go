@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
+
 	"github.com/barkingdog-ai/azure-tts/model"
 	"github.com/barkingdog-ai/azure-tts/utils"
-	"io/ioutil"
 )
 
 type SpeechInterface interface {
-	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) ([]byte, error)
+	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) (*[]byte, error)
 }
 
-func (az *AzureTTSClient) TextToSpeech(ctx context.Context, request model.TextToSpeechRequest) ([]byte, error) {
+func (az *AzureTTSClient) TextToSpeech(ctx context.Context, request model.TextToSpeechRequest) (*[]byte, error) {
 
 	rate, _ := utils.ConvertStringToFloat32(request.Rate)
 	pitch, _ := utils.ConvertStringToFloat32(request.Pitch)
@@ -35,6 +36,10 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context, request model.TextTo
 		return nil, fmt.Errorf("perform request error %v", err)
 	}
 
-	return ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("perform request error %v", err)
+	}
 
+	return &data, nil
 }
