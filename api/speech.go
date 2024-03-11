@@ -11,7 +11,7 @@ import (
 )
 
 type SpeechInterface interface {
-	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) (*[]byte, error)
+	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) ([]byte, error)
 }
 
 func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
