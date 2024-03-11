@@ -14,8 +14,10 @@ type SpeechInterface interface {
 	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) (*[]byte, error)
 }
 
-func (az *AzureTTSClient) TextToSpeech(ctx context.Context, request model.TextToSpeechRequest) (*[]byte, error) {
+func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
+	request model.TextToSpeechRequest) ([]byte, error) {
 
+	respData := make([]byte, 0)
 	rate, _ := utils.ConvertStringToFloat32(request.Rate)
 	pitch, _ := utils.ConvertStringToFloat32(request.Pitch)
 	v := voiceXML(
@@ -28,18 +30,18 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context, request model.TextTo
 
 	req, err := az.newTTSRequest(ctx, "POST", az.TextToSpeechURL, bytes.NewBufferString(v), model.Audio16khz32kbitrateMonoMp3)
 	if err != nil {
-		return nil, fmt.Errorf("tts request error %v", err)
+		return respData, fmt.Errorf("tts request error %v", err)
 	}
 
 	resp, err := az.performRequest(req)
 	if err != nil {
-		return nil, fmt.Errorf("perform request error %v", err)
+		return respData, fmt.Errorf("perform request error %v", err)
 	}
 
-	data, err := io.ReadAll(resp.Body)
+	respData, err = io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("perform request error %v", err)
+		return respData, fmt.Errorf("perform request error %v", err)
 	}
 
-	return &data, nil
+	return respData, nil
 }
