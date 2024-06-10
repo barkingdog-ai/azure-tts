@@ -3,10 +3,11 @@ package azuretts
 import (
 	"context"
 	"fmt"
-	API "github.com/barkingdog-ai/azure-tts/api"
-	"github.com/barkingdog-ai/azure-tts/model"
 	"net/http"
 	"time"
+
+	API "github.com/barkingdog-ai/azure-tts/api"
+	"github.com/barkingdog-ai/azure-tts/model"
 )
 
 const (
@@ -20,9 +21,6 @@ const (
 
 // synthesizeActionTimeout is the amount of time the http client will wait for a response during Synthesize request
 const synthesizeActionTimeout = time.Second * 30
-
-// tokenRefreshTimeout is the amount of time the http client will wait during the token refresh action.
-const tokenRefreshTimeout = time.Second * 15
 
 const (
 	defaultTimeoutSeconds = 30
@@ -68,7 +66,9 @@ func NewClient(subscriptionKey string, region model.Region, options ...API.Clien
 	az.TokenRefreshDoneCh = startRefresher(ctx, az)
 
 	for _, o := range options {
-		o(az)
+		if err := o(az); err != nil {
+			return nil, err
+		}
 	}
 	return az, nil
 }
