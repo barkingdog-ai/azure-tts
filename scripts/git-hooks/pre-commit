@@ -1,0 +1,45 @@
+#!/bin/sh
+
+set -e
+
+# Function to check the last command status
+check_status() {
+    if [ $? != 0 ]; then
+        echo >&2 "$1 failed"
+        exit 1
+    fi
+}
+
+# Run go mod tidy and check for errors
+go mod tidy
+check_status "go mod tidy"
+
+# Stage go.mod and go.sum files
+git add go.mod go.sum
+
+# Format Go files
+STAGED_GO_FILES=$(git diff --cached --name-only --diff-filter=d | grep ".go$" || true)
+
+if [ -z "$STAGED_GO_FILES" ]; then
+    echo "No Go files to format"
+else
+    for FILE in $STAGED_GO_FILES; do
+        goimports -w "$FILE"
+        check_status "goimports on $FILE"
+
+        gofumpt -w "$FILE"
+        check_status "gofumpt on $FILE"
+
+        git add "$FILE"
+    done
+fi
+
+# Run golangci-lint and check for errors
+golangci-lint run
+check_status "golangci-lint"
+
+# Run go test and check for errors
+go test -v ./...
+check_status "go test"
+
+exit 0

@@ -2,11 +2,6 @@ package model
 
 type voiceType int
 
-const (
-	voiceStandard voiceType = iota // Standard
-	voiceNeural                    // Neural
-)
-
 type VoiceListResponse struct {
 	Name            string    `json:"Name"`
 	LocalName       string    `json:"LocalName"`
@@ -19,10 +14,4 @@ type VoiceListResponse struct {
 	StyleList       []string  `json:"StyleList"`
 	Status          string    `json:"Status"`
 	WordsPerMinute  string    `json:"WordsPerMinute"`
-}
-
-// supportedVoices represents the key used within the `localeToGender` map.
-type supportedVoices struct {
-	Gender Gender
-	Locale Locale
 }

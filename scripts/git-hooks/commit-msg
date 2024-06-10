@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# 設置錯誤狀態退出
+set -e
+
+# 檢查提交消息格式
+if ! grep -qE "^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|merge)(\(.+\))?: .+" "$1"; then
+  echo >&2 "提交消息格式錯誤：格式應為 '<type>(<scope>): <subject>'，例如 'feat(login): 增加使用者登錄功能'"
+  exit 1
+fi
+
+# 檢查提交消息是否關閉了相應的GitLab issue
+ISSUE_PATTERN="^(fix|close|resolve)s #([0-9]+)"
+COMMIT_MSG=`cat "$1"`
+if [[ $COMMIT_MSG =~ $ISSUE_PATTERN ]]; then
+  ISSUE_ID=${BASH_REMATCH[2]}
+  RESPONSE=`curl --silent --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/api/v4/projects/$CI_PROJECT_ID/issues/$ISSUE_ID?state=opened"`
+  if [[ $RESPONSE == *"Not Found"* ]]; then
+    echo >&2 "提交消息錯誤：未找到GitLab issue #$ISSUE_ID"
+    exit 1
+  fi
+fi
+
+# 結束腳本
+exit 0
