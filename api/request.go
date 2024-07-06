@@ -71,7 +71,7 @@ func (az *AzureTTSClient) newRequest(ctx context.Context, method, path string, p
 	return req, nil
 }
 
-func (az AzureTTSClient) performRequest2(req2 *http.Request) (*http.Response, error) {
+func (az AzureTTSClient) performReq(req2 *http.Request) (*http.Response, error) {
 	// Create a new HTTP client and request
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", "https://eastasia.api.cognitive.microsoft.com/sts/v1.0/issueToken", bytes.NewBuffer([]byte("")))

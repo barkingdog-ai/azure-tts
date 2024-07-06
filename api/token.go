@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 type TokenInterface interface {
@@ -15,11 +15,11 @@ func (az *AzureTTSClient) RefreshToken(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	resp, err := az.performRequest2(req)
+	resp, err := az.performReq(req)
 	if err != nil {
 		return err
 	}
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("failed to read response body: %w", err)
 	}

@@ -35,13 +35,13 @@ type Interface interface {
 
 // NewClient returns a new Azure client. An subscriptionKey is required to use the client
 func NewClient(subscriptionKey string, region model.Region, options ...API.ClientOption) (*API.AzureTTSClient, error) {
-	HTTPClient := &http.Client{
+	httpClient := &http.Client{
 		Timeout: time.Duration(defaultTimeoutSeconds * time.Second),
 	}
 
 	az := &API.AzureTTSClient{
 		SubscriptionKey: subscriptionKey,
-		HTTPClient:      HTTPClient,
+		HTTPClient:      httpClient,
 	}
 	az.TextToSpeechURL = fmt.Sprintf(textToSpeechAPI, region)
 	az.SpeechToTextURL = fmt.Sprintf(speechToTextAPI, region)
@@ -57,14 +57,6 @@ func NewClient(subscriptionKey string, region model.Region, options ...API.Clien
 		return nil, fmt.Errorf("failed to fetch initial token, %v", err)
 	}
 
-	/*
-		 // TODO
-			m, err := az.buildVoiceToRegionMap()
-			if err != nil {
-				return nil, fmt.Errorf("unable to fetch voice-map, %v", err)
-			}
-			az.RegionVoiceMap = m
-	*/
 	az.TokenRefreshDoneCh = startRefresher(ctx, az)
 
 	for _, o := range options {
