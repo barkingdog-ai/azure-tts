@@ -9,9 +9,9 @@ import (
 type ClientOption func(*AzureTTSClient) error
 
 // WithHTTPClient allows you to override the internal http.Client used
-func WithHTTPClient(httpClient *http.Client) ClientOption {
+func WithHTTPClient(HTTPClient *http.Client) ClientOption {
 	return func(c *AzureTTSClient) error {
-		c.HttpClient = httpClient
+		c.HTTPClient = HTTPClient
 		return nil
 	}
 }
@@ -21,7 +21,7 @@ func WithHTTPClient(httpClient *http.Client) ClientOption {
 // the timeout there.
 func WithTimeout(timeout time.Duration) ClientOption {
 	return func(c *AzureTTSClient) error {
-		c.HttpClient.Timeout = timeout
+		c.HTTPClient.Timeout = timeout
 		return nil
 	}
 }

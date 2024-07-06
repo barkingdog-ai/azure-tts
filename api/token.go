@@ -11,7 +11,6 @@ type TokenInterface interface {
 }
 
 func (az *AzureTTSClient) RefreshToken(ctx context.Context) error {
-
 	req, err := az.newTokenRequest(ctx, "POST", az.TokenRefreshURL, nil)
 	if err != nil {
 		return err

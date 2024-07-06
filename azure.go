@@ -35,13 +35,13 @@ type Interface interface {
 
 // NewClient returns a new Azure client. An subscriptionKey is required to use the client
 func NewClient(subscriptionKey string, region model.Region, options ...API.ClientOption) (*API.AzureTTSClient, error) {
-	httpClient := &http.Client{
+	HTTPClient := &http.Client{
 		Timeout: time.Duration(defaultTimeoutSeconds * time.Second),
 	}
 
 	az := &API.AzureTTSClient{
 		SubscriptionKey: subscriptionKey,
-		HttpClient:      httpClient,
+		HTTPClient:      HTTPClient,
 	}
 	az.TextToSpeechURL = fmt.Sprintf(textToSpeechAPI, region)
 	az.SpeechToTextURL = fmt.Sprintf(speechToTextAPI, region)

@@ -17,8 +17,8 @@ type SpeechInterface interface {
 }
 
 func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
-	request model.TextToSpeechRequest) ([]byte, error) {
-
+	request model.TextToSpeechRequest,
+) ([]byte, error) {
 	respData := make([]byte, 0)
 	rate, _ := utils.ConvertStringToFloat32(request.Rate)
 	pitch, _ := utils.ConvertStringToFloat32(request.Pitch)
@@ -49,7 +49,8 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 }
 
 func (az *AzureTTSClient) SpeechToText(ctx context.Context,
-	request model.SpeechToTextReq) (*model.SpeechToTextResp, error) {
+	request model.SpeechToTextReq,
+) (*model.SpeechToTextResp, error) {
 	file, err := os.Open(request.FilePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file: %v", err)

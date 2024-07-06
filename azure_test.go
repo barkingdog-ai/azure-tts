@@ -50,7 +50,7 @@ func TestNewClientAndTextToSpeech(t *testing.T) {
 		}
 
 		outputFile := "output.raw"
-		err = os.WriteFile(outputFile, audioData, 0644)
+		err = os.WriteFile(outputFile, audioData, 0o644)
 		if err != nil {
 			t.Fatalf("failed to write audio data to file: %v", err)
 		}
