@@ -1,5 +1,7 @@
 package model
 
+import "mime/multipart"
+
 // TextToSpeechRequest is a request for the TextToSpeech API
 type TextToSpeechRequest struct {
 	SpeechText  string
@@ -16,7 +18,7 @@ type TextToSpeechResponse struct {
 }
 
 type SpeechToTextReq struct {
-	FilePath string
+	File     *multipart.FileHeader
 	Language string
 }
 
