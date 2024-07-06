@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/barkingdog-ai/azure-tts/model"
 )
@@ -45,6 +46,25 @@ func (az *AzureTTSClient) newTTSRequest(ctx context.Context, method, path string
 	return req, nil
 }
 
+func createFilePayload(request model.SpeechToTextReq) (io.Reader, error) {
+	if request.Reader != nil {
+		return request.Reader, nil
+	}
+
+	f, err := os.Open(request.FilePath)
+	if err != nil {
+		return nil, fmt.Errorf("opening audio file: %w", err)
+	}
+	defer f.Close()
+
+	var buf bytes.Buffer
+	_, err = io.Copy(&buf, f)
+	if err != nil {
+		return nil, fmt.Errorf("reading audio file: %w", err)
+	}
+
+	return &buf, nil
+}
 func (az *AzureTTSClient) newSTTRequest(ctx context.Context, method, path string,
 	payload io.Reader,
 ) (*http.Request, error) {
