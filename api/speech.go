@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/barkingdog-ai/azure-tts/model"
 	"github.com/barkingdog-ai/azure-tts/utils"
@@ -12,6 +13,7 @@ import (
 
 type SpeechInterface interface {
 	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) ([]byte, error)
+	SpeechToText(ctx context.Context, req model.SpeechToTextReq) (model.SpeechToTextResp, error)
 }
 
 func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
@@ -44,4 +46,35 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 	}
 
 	return respData, nil
+}
+
+func (az *AzureTTSClient) SpeechToText(ctx context.Context,
+	request model.SpeechToTextReq) (*model.SpeechToTextResp, error) {
+	file, err := os.Open(request.FilePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file: %v", err)
+	}
+	defer file.Close()
+
+	buf := new(bytes.Buffer)
+	if _, err := io.Copy(buf, file); err != nil {
+		return nil, fmt.Errorf("failed to read file: %v", err)
+	}
+
+	url := fmt.Sprintf("%s?language=%s", az.SpeechToTextURL, request.Language)
+	req, err := az.newSTTRequest(ctx, "POST", url, buf)
+	if err != nil {
+		return nil, fmt.Errorf("STT request error: %v", err)
+	}
+
+	resp, err := az.performRequest(req)
+	if err != nil {
+		return nil, fmt.Errorf("perform request error %v", err)
+	}
+
+	output := new(model.SpeechToTextResp)
+	if err := getResponseObject(resp, output); err != nil {
+		return nil, err
+	}
+	return output, nil
 }

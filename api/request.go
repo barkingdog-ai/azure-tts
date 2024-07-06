@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/barkingdog-ai/azure-tts/model"
 	"io"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/barkingdog-ai/azure-tts/model"
 )
 
 // TTSApiXMLPayload templates the payload required for API.
@@ -45,6 +46,17 @@ func (az *AzureTTSClient) newTTSRequest(ctx context.Context, method, path string
 	return req, nil
 }
 
+func (az *AzureTTSClient) newSTTRequest(ctx context.Context, method, path string,
+	payload io.Reader) (*http.Request, error) {
+
+	req, err := http.NewRequestWithContext(ctx, method, path, payload)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
+	req.Header.Set("Content-Type", "audio/wav; codecs=audio/pcm; samplerate=16000")
+	return req, nil
+}
 func (az *AzureTTSClient) newRequest(ctx context.Context, method, path string, payload interface{}) (*http.Request, error) {
 	bodyReader, err := jsonBodyReader(payload)
 	if err != nil {

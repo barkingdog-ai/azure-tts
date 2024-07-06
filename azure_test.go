@@ -10,12 +10,12 @@ import (
 )
 
 const (
-	testSpeechText  = "你好123"
+	testSpeechText  = "你好,我是AI客服嘻嘻,您需要什麼協助嗎?"
 	testLocale      = model.LocaleZhTW
 	testGender      = model.GenderFemale
 	testVoiceName   = "zh-TW-HsiaoChenNeural"
 	testAudioOutput = model.AudioRAW8Bit8kHzMonoMulaw
-	testRate        = "1"
+	testRate        = "1.15"
 	testPitch       = "1"
 )
 
@@ -49,14 +49,14 @@ func TestNewClientAndTextToSpeech(t *testing.T) {
 			t.Fatalf("unable to synthesize, received: %v", err)
 		}
 
-		outputFile := "output.mp3"
+		outputFile := "output.raw"
 		err = os.WriteFile(outputFile, audioData, 0644)
 		if err != nil {
 			t.Fatalf("failed to write audio data to file: %v", err)
 		}
 
 		t.Logf("Audio synthesized and written to %s", outputFile)
-		defer os.Remove(outputFile)
+		// defer os.Remove(outputFile)
 
 		fileInfo, err := os.Stat(outputFile)
 		if err != nil {

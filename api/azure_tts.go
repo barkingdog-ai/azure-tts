@@ -12,4 +12,5 @@ type AzureTTSClient struct {
 	TokenRefreshURL     string
 	VoiceServiceListURL string
 	TextToSpeechURL     string
+	SpeechToTextURL     string
 }

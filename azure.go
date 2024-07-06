@@ -16,6 +16,7 @@ const (
 	voiceListAPI = "https://%s.tts.speech.microsoft.com/cognitiveservices/voices/list"
 	// The following are V1 endpoints for Cognitiveservices endpoints
 	textToSpeechAPI = "https://%s.tts.speech.microsoft.com/cognitiveservices/v1"
+	speechToTextAPI = "https://%s.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1"
 	tokenRefreshAPI = "https://%s.api.cognitive.microsoft.com/sts/v1.0/issueToken"
 )
 
@@ -43,6 +44,7 @@ func NewClient(subscriptionKey string, region model.Region, options ...API.Clien
 		HttpClient:      httpClient,
 	}
 	az.TextToSpeechURL = fmt.Sprintf(textToSpeechAPI, region)
+	az.SpeechToTextURL = fmt.Sprintf(speechToTextAPI, region)
 	az.TokenRefreshURL = fmt.Sprintf(tokenRefreshAPI, region)
 	az.VoiceServiceListURL = fmt.Sprintf(voiceListAPI, region)
 
