@@ -1,7 +1,11 @@
 package api_test
 
 import (
+	"bytes"
 	"context"
+	"fmt"
+	"io"
+	"mime/multipart"
 	"os"
 	"testing"
 
@@ -61,12 +65,30 @@ func TestSpeechToText(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create new client, received %v", err)
 	}
+	file, err := os.Open("../data/test.mp4")
+	if err != nil {
+		t.Fatalf("failed to open file: %v", err)
+	}
+	defer file.Close()
 
+	buf := new(bytes.Buffer)
+	if _, err := io.Copy(buf, file); err != nil {
+		t.Fatalf("failed to read file: %v", err)
+	}
+	fileStat, err := file.Stat()
+	if err != nil {
+		t.Fatalf("failed to get file stats: %v", err)
+	}
+	fileHeader := &multipart.FileHeader{
+		Filename: fileStat.Name(),
+		Size:     fileStat.Size(),
+	}
 	req := model.SpeechToTextReq{
-		FilePath: "../data/test.mp4",
+		File:     fileHeader,
 		Language: "zh-TW",
 	}
 
+	fmt.Println("fileHeader: ", fileHeader.Size, fileHeader.Filename)
 	ctx := context.Background()
 	resp, err := az.SpeechToText(ctx, req)
 	if err != nil {

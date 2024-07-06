@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"os"
 
 	"github.com/barkingdog-ai/azure-tts/model"
 	"github.com/barkingdog-ai/azure-tts/utils"
@@ -51,14 +50,14 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 func (az *AzureTTSClient) SpeechToText(ctx context.Context,
 	request model.SpeechToTextReq,
 ) (*model.SpeechToTextResp, error) {
-	file, err := os.Open(request.FilePath)
+	openedFile, err := request.File.Open()
 	if err != nil {
-		return nil, fmt.Errorf("failed to open file: %v", err)
+		return nil, err
 	}
-	defer file.Close()
+	defer openedFile.Close()
 
 	buf := new(bytes.Buffer)
-	if _, err := io.Copy(buf, file); err != nil {
+	if _, err := io.Copy(buf, openedFile); err != nil {
 		return nil, fmt.Errorf("failed to read file: %v", err)
 	}
 
