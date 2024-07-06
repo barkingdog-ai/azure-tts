@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/barkingdog-ai/azure-tts/model"
 	"io"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/barkingdog-ai/azure-tts/model"
 )
 
 // TTSApiXMLPayload templates the payload required for API.
@@ -32,7 +33,6 @@ func (az *AzureTTSClient) newTokenRequest(ctx context.Context, method, path stri
 }
 
 func (az *AzureTTSClient) newTTSRequest(ctx context.Context, method, path string, payload io.Reader, audioOutput model.AudioOutput) (*http.Request, error) {
-
 	req, err := http.NewRequestWithContext(ctx, method, path, payload)
 	if err != nil {
 		return nil, err
@@ -42,6 +42,18 @@ func (az *AzureTTSClient) newTTSRequest(ctx context.Context, method, path string
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", az.AccessToken))
 	req.Header.Set("User-Agent", "azuretts")
 
+	return req, nil
+}
+
+func (az *AzureTTSClient) newSTTRequest(ctx context.Context, method, path string,
+	payload io.Reader,
+) (*http.Request, error) {
+	req, err := http.NewRequestWithContext(ctx, method, path, payload)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
+	req.Header.Set("Content-Type", "audio/wav; codecs=audio/pcm; samplerate=16000")
 	return req, nil
 }
 
@@ -58,8 +70,8 @@ func (az *AzureTTSClient) newRequest(ctx context.Context, method, path string, p
 	req.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
 	return req, nil
 }
-func (az AzureTTSClient) performRequest2(req2 *http.Request) (*http.Response, error) {
 
+func (az AzureTTSClient) performReq(req2 *http.Request) (*http.Response, error) {
 	// Create a new HTTP client and request
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", "https://eastasia.api.cognitive.microsoft.com/sts/v1.0/issueToken", bytes.NewBuffer([]byte("")))
@@ -81,7 +93,7 @@ func (az AzureTTSClient) performRequest2(req2 *http.Request) (*http.Response, er
 }
 
 func (az *AzureTTSClient) performRequest(req *http.Request) (*http.Response, error) {
-	resp, err := az.HttpClient.Do(req)
+	resp, err := az.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +167,6 @@ func getResponseObject(rsp *http.Response, v interface{}) error {
 		return fmt.Errorf("invalid json resp: %w", err)
 	}
 	return nil
-
 }
 
 // voiceXML renders the XML payload for the TTS api.

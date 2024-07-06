@@ -5,11 +5,12 @@ import (
 )
 
 type AzureTTSClient struct {
-	HttpClient          *http.Client
+	HTTPClient          *http.Client
 	AccessToken         string
 	SubscriptionKey     string
 	TokenRefreshDoneCh  chan bool
 	TokenRefreshURL     string
 	VoiceServiceListURL string
 	TextToSpeechURL     string
+	SpeechToTextURL     string
 }

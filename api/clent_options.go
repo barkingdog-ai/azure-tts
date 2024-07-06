@@ -5,13 +5,11 @@ import (
 	"time"
 )
 
-// ClientOption are options that can be passed when creating a new client
 type ClientOption func(*AzureTTSClient) error
 
-// WithHTTPClient allows you to override the internal http.Client used
 func WithHTTPClient(httpClient *http.Client) ClientOption {
 	return func(c *AzureTTSClient) error {
-		c.HttpClient = httpClient
+		c.HTTPClient = httpClient
 		return nil
 	}
 }
@@ -21,7 +19,7 @@ func WithHTTPClient(httpClient *http.Client) ClientOption {
 // the timeout there.
 func WithTimeout(timeout time.Duration) ClientOption {
 	return func(c *AzureTTSClient) error {
-		c.HttpClient.Timeout = timeout
+		c.HTTPClient.Timeout = timeout
 		return nil
 	}
 }

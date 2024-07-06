@@ -25,7 +25,8 @@ const (
 )
 
 func (a AudioOutput) String() string {
-	return []string{"riff-8khz-8bit-mono-mulaw",
+	return []string{
+		"riff-8khz-8bit-mono-mulaw",
 		"riff-16khz-16bit-mono-pcm",
 		"riff-16khz-16kbps-mono-siren",
 		"riff-24khz-16bit-mono-pcm",
@@ -44,6 +45,7 @@ func (a AudioOutput) String() string {
 }
 
 // Gender type for the digitized language
+//
 //go:generate enumer -type=Gender -linecomment -json
 type Gender int
 
@@ -56,11 +58,12 @@ const (
 
 // Locale references the language or locale for text-to-speech.
 // See "locale" in https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#standard-voices
+//
 //go:generate enumer -type=Locale -linecomment -json
 type Locale int
 
 const (
-	LocaleArEG Locale = iota //ar-EG
+	LocaleArEG Locale = iota // ar-EG
 	LocaleArSA               // ar-SA
 	LocaleBgBG               // bg-BG
 	LocaleCaES               // ca-ES
@@ -168,5 +171,4 @@ func (t Region) String() string {
 		"westus",
 		"westus2",
 	}[t]
-
 }

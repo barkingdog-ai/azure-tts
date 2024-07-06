@@ -14,3 +14,15 @@ type TextToSpeechRequest struct {
 type TextToSpeechResponse struct {
 	Audio []byte
 }
+
+type SpeechToTextReq struct {
+	FilePath string
+	Language string
+}
+
+type SpeechToTextResp struct {
+	RecognitionStatus string `json:"RecognitionStatus"`
+	Offset            int    `json:"Offset"`
+	Duration          int    `json:"Duration"`
+	DisplayText       string `json:"DisplayText"`
+}
