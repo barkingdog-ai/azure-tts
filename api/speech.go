@@ -50,19 +50,15 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 func (az *AzureTTSClient) SpeechToText(ctx context.Context,
 	request model.SpeechToTextReq,
 ) (*model.SpeechToTextResp, error) {
-	openedFile, err := request.File.Open()
+
+	url := fmt.Sprintf("%s?language=%s", az.SpeechToTextURL, request.Language)
+
+	payload, err := createFilePayload(request)
 	if err != nil {
 		return nil, err
 	}
-	defer openedFile.Close()
 
-	buf := new(bytes.Buffer)
-	if _, err := io.Copy(buf, openedFile); err != nil {
-		return nil, fmt.Errorf("failed to read file: %v", err)
-	}
-
-	url := fmt.Sprintf("%s?language=%s", az.SpeechToTextURL, request.Language)
-	req, err := az.newSTTRequest(ctx, "POST", url, buf)
+	req, err := az.newSTTRequest(ctx, "POST", url, payload)
 	if err != nil {
 		return nil, fmt.Errorf("STT request error: %v", err)
 	}
