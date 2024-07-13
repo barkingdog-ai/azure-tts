@@ -44,19 +44,19 @@ func TestNewClientAndTextToSpeech(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("SynthesizeSpeech", func(t *testing.T) {
-		audioData, err := az.TextToSpeech(ctx, req)
+		audioData, err := az.TextToSpeech(ctx, &req)
 		if err != nil {
 			t.Fatalf("unable to synthesize, received: %v", err)
 		}
 
 		outputFile := "output.raw"
-		err = os.WriteFile(outputFile, audioData, 0o644)
+		err = os.WriteFile(outputFile, audioData, 0600)
 		if err != nil {
 			t.Fatalf("failed to write audio data to file: %v", err)
 		}
 
 		t.Logf("Audio synthesized and written to %s", outputFile)
-		// defer os.Remove(outputFile)
+		defer os.Remove(outputFile)
 
 		fileInfo, err := os.Stat(outputFile)
 		if err != nil {

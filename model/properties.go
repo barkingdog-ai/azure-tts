@@ -51,7 +51,7 @@ type Gender int
 
 const (
 	// GenderMale , GenderFemale are the static Gender constants for digitized voices.
-	// See Gender in https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#standard-voices for breakdown
+	// See Gender in https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#standard-voices for breakdown.
 	GenderMale   Gender = iota // Male
 	GenderFemale               // Female
 )
@@ -91,7 +91,7 @@ const (
 	LocaleHiIN               // hi-IN
 	LocaleHrHR               // hr-HR
 	LocaleHuHU               // hu-HU
-	LocaleIdID               // id-ID
+	LocaleIDID               // id-ID
 	LocaleItIT               // it-IT
 	LocaleJaJP               // ja-JP
 	LocaleKoKR               // ko-KR
