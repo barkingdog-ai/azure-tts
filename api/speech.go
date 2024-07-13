@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/barkingdog-ai/azure-tts/model"
 	"github.com/barkingdog-ai/azure-tts/utils"
@@ -13,6 +14,7 @@ import (
 type SpeechInterface interface {
 	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) ([]byte, error)
 	SpeechToText(ctx context.Context, req model.SpeechToTextReq) (*model.SpeechToTextResp, error)
+	CorrectHomophones(req model.TextToSpeechRequest) (resp model.TextToSpeechRequest)
 }
 
 func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
@@ -28,6 +30,8 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 		request.Gender,
 		utils.ConvertFloat32ToString((rate-1)*100)+"%",
 		utils.ConvertFloat32ToString((pitch-1)*50)+"%")
+
+	request = az.CorrectHomophones(request)
 
 	req, err := az.newTTSRequest(ctx, "POST", az.TextToSpeechURL, bytes.NewBufferString(v), model.Audio16khz32kbitrateMonoMp3)
 	if err != nil {
@@ -72,4 +76,11 @@ func (az *AzureTTSClient) SpeechToText(ctx context.Context,
 		return nil, err
 	}
 	return output, nil
+}
+
+func (az *AzureTTSClient) CorrectHomophones(req model.TextToSpeechRequest) (resp model.TextToSpeechRequest) {
+	for _, homophone := range req.Homophones {
+		req.SpeechText = strings.ReplaceAll(req.SpeechText, homophone.TargetText, homophone.ReplaceText)
+	}
+	return req
 }

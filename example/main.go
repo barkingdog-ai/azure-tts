@@ -13,7 +13,7 @@ import (
 func main() {
 	var apiKey string
 	if apiKey = os.Getenv("AZURE_KEY"); apiKey == "" {
-		exit(fmt.Errorf("Please set your AZURE_KEY environment variable"))
+		exit(fmt.Errorf("please set your AZURE_KEY environment variable"))
 	}
 
 	az, err := tts.NewClient(apiKey, model.RegionEastAsia)

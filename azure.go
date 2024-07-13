@@ -79,7 +79,7 @@ func startRefresher(ctx context.Context, az *API.AzureTTSClient) chan bool {
 			case <-ticker.C:
 				err := az.RefreshToken(ctx)
 				if err != nil {
-					fmt.Sprintf("failed to refresh token, %v", err)
+					_ = fmt.Sprintf("failed to refresh token, %v", err)
 				}
 			case <-done:
 				return

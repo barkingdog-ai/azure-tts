@@ -90,3 +90,50 @@ func TestSpeechToText(t *testing.T) {
 
 	t.Logf("Response: %+v", resp)
 }
+
+func TestCorrectHomophones(t *testing.T) {
+	var apiKey string
+	if apiKey = os.Getenv("AZURE_API_KEY"); apiKey == "" {
+		err := godotenv.Load("../.envrc")
+		if err != nil {
+			t.Fatalf("Failed to load .envrc file: %v", err)
+		}
+	}
+
+	az, err := tts.NewClient(apiKey, model.RegionEastAsia)
+	if err != nil {
+		t.Fatalf("failed to create new client, received %v", err)
+	}
+	tests := []struct {
+		input    model.TextToSpeechRequest
+		expected string
+	}{
+		{
+			input: model.TextToSpeechRequest{
+				SpeechText: "I need to read the lead before I lead the team.",
+				Homophones: []model.Homophones{
+					{TargetText: "read", ReplaceText: "reed"},
+					{TargetText: "lead", ReplaceText: "led"},
+				},
+			},
+			expected: "I need to reed the led before I led the team.",
+		},
+		{
+			input: model.TextToSpeechRequest{
+				SpeechText: "The wind was too strong to wind the sail.",
+				Homophones: []model.Homophones{
+					{TargetText: "wind", ReplaceText: "wīnd"},
+					{TargetText: "wind", ReplaceText: "wīnd"},
+				},
+			},
+			expected: "The wīnd was too strong to wīnd the sail.",
+		},
+	}
+
+	for _, test := range tests {
+		resp := az.CorrectHomophones(test.input)
+		if resp.SpeechText != test.expected {
+			t.Errorf("expected %v, but got %v", test.expected, test.input.SpeechText)
+		}
+	}
+}
