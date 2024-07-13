@@ -1,8 +1,9 @@
 package model
 
-import "io"
+import (
+	"io"
+)
 
-// TextToSpeechRequest is a request for the TextToSpeech API
 type TextToSpeechRequest struct {
 	SpeechText  string
 	Locale      Locale
@@ -11,6 +12,12 @@ type TextToSpeechRequest struct {
 	AudioOutput AudioOutput
 	Rate        string
 	Pitch       string
+	Homophones  []Homophones
+}
+
+type Homophones struct {
+	TargetText  string `json:"target_text"`
+	ReplaceText string `json:"replace_text"`
 }
 
 type TextToSpeechResponse struct {

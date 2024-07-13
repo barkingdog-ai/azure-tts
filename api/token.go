@@ -15,10 +15,13 @@ func (az *AzureTTSClient) RefreshToken(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+
 	resp, err := az.performReq(req)
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("failed to read response body: %w", err)

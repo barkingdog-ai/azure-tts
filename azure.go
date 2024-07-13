@@ -14,13 +14,13 @@ const (
 	// voiceListAPI is the source for supported voice list to region mapping
 	// See: https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#regions-and-endpoints
 	voiceListAPI = "https://%s.tts.speech.microsoft.com/cognitiveservices/voices/list"
-	// The following are V1 endpoints for Cognitiveservices endpoints
+	// The following are V1 endpoints for Cognitiveservices endpoints.
 	textToSpeechAPI = "https://%s.tts.speech.microsoft.com/cognitiveservices/v1"
 	speechToTextAPI = "https://%s.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1"
-	tokenRefreshAPI = "https://%s.api.cognitive.microsoft.com/sts/v1.0/issueToken"
+	refreshAPI      = "https://%s.api.cognitive.microsoft.com/sts/v1.0/issueToken"
 )
 
-// synthesizeActionTimeout is the amount of time the http client will wait for a response during Synthesize request
+// synthesizeActionTimeout is the amount of time the http client will wait for a response during Synthesize request.
 const synthesizeActionTimeout = time.Second * 30
 
 const (
@@ -33,10 +33,9 @@ type Interface interface {
 	API.TokenInterface
 }
 
-// NewClient returns a new Azure client. An subscriptionKey is required to use the client
 func NewClient(subscriptionKey string, region model.Region, options ...API.ClientOption) (*API.AzureTTSClient, error) {
 	httpClient := &http.Client{
-		Timeout: time.Duration(defaultTimeoutSeconds * time.Second),
+		Timeout: defaultTimeoutSeconds * time.Second,
 	}
 
 	az := &API.AzureTTSClient{
@@ -45,7 +44,7 @@ func NewClient(subscriptionKey string, region model.Region, options ...API.Clien
 	}
 	az.TextToSpeechURL = fmt.Sprintf(textToSpeechAPI, region)
 	az.SpeechToTextURL = fmt.Sprintf(speechToTextAPI, region)
-	az.TokenRefreshURL = fmt.Sprintf(tokenRefreshAPI, region)
+	az.TokenRefreshURL = fmt.Sprintf(refreshAPI, region)
 	az.VoiceServiceListURL = fmt.Sprintf(voiceListAPI, region)
 
 	// api requires that the token is refreshed every 10 mintutes.
@@ -72,14 +71,15 @@ func NewClient(subscriptionKey string, region model.Region, options ...API.Clien
 func startRefresher(ctx context.Context, az *API.AzureTTSClient) chan bool {
 	done := make(chan bool, 1)
 	go func() {
-		ticker := time.NewTicker(time.Minute * 9)
+		const refreshInterval = time.Minute * 9
+		ticker := time.NewTicker(refreshInterval)
 		defer ticker.Stop()
 		for {
 			select {
 			case <-ticker.C:
 				err := az.RefreshToken(ctx)
 				if err != nil {
-					fmt.Sprintf("failed to refresh token, %v", err)
+					_ = fmt.Sprintf("failed to refresh token, %v", err)
 				}
 			case <-done:
 				return
