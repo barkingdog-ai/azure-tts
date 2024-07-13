@@ -23,22 +23,21 @@ func main() {
 	defer close(az.TokenRefreshDoneCh)
 	ctx := context.Background()
 	req := model.TextToSpeechRequest{
-		SpeechText: "你好123",
-		Locale:     model.LocaleZhTW,
-		Gender:     model.GenderFemale,
-		// VoiceName:   "en-US-ChristopherNeural",
+		SpeechText:  "你好123",
+		Locale:      model.LocaleZhTW,
+		Gender:      model.GenderFemale,
 		VoiceName:   "zh-TW-HsiaoChenNeural",
 		AudioOutput: model.Audio16khz32kbitrateMonoMp3,
 		Rate:        "1",
 		Pitch:       "1",
 	}
-	b, err := az.TextToSpeech(ctx, req)
+	b, err := az.TextToSpeech(ctx, &req)
 	if err != nil {
 		exit(fmt.Errorf("unable to synthesize, received: %v", err))
 	}
 
-	// send results to disk.
-	err = ioutil.WriteFile("audio1.mp3", b, 0o644)
+	const filePermission = 0600
+	err = ioutil.WriteFile("audio1.mp3", b, filePermission)
 	if err != nil {
 		exit(fmt.Errorf("unable to write file, received %v", err))
 	}

@@ -12,26 +12,29 @@ import (
 )
 
 type SpeechInterface interface {
-	TextToSpeech(ctx context.Context, req model.TextToSpeechRequest) ([]byte, error)
+	TextToSpeech(ctx context.Context, req *model.TextToSpeechRequest) ([]byte, error)
 	SpeechToText(ctx context.Context, req model.SpeechToTextReq) (*model.SpeechToTextResp, error)
-	CorrectHomophones(req model.TextToSpeechRequest) (resp model.TextToSpeechRequest)
+	CorrectHomophones(req *model.TextToSpeechRequest) (resp model.TextToSpeechRequest)
 }
 
 func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
-	request model.TextToSpeechRequest,
+	request *model.TextToSpeechRequest,
 ) ([]byte, error) {
 	respData := make([]byte, 0)
 	rate, _ := utils.ConvertStringToFloat32(request.Rate)
 	pitch, _ := utils.ConvertStringToFloat32(request.Pitch)
+	rateValue := (rate - 1) * 100
+	pitchValue := (pitch - 1) * 50
 	v := voiceXML(
 		request.SpeechText,
 		request.VoiceName,
 		request.Locale,
 		request.Gender,
-		utils.ConvertFloat32ToString((rate-1)*100)+"%",
-		utils.ConvertFloat32ToString((pitch-1)*50)+"%")
+		utils.ConvertFloat32ToString(rateValue)+"%",
+		utils.ConvertFloat32ToString(pitchValue)+"%",
+	)
 
-	request = az.CorrectHomophones(request)
+	az.CorrectHomophones(request)
 
 	req, err := az.newTTSRequest(ctx, "POST", az.TextToSpeechURL, bytes.NewBufferString(v), model.Audio16khz32kbitrateMonoMp3)
 	if err != nil {
@@ -42,6 +45,8 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 	if err != nil {
 		return respData, fmt.Errorf("perform request error %v", err)
 	}
+
+	defer resp.Body.Close()
 
 	respData, err = io.ReadAll(resp.Body)
 	if err != nil {
@@ -78,9 +83,8 @@ func (az *AzureTTSClient) SpeechToText(ctx context.Context,
 	return output, nil
 }
 
-func (az *AzureTTSClient) CorrectHomophones(req model.TextToSpeechRequest) (resp model.TextToSpeechRequest) {
+func (az *AzureTTSClient) CorrectHomophones(req *model.TextToSpeechRequest) {
 	for _, homophone := range req.Homophones {
 		req.SpeechText = strings.ReplaceAll(req.SpeechText, homophone.TargetText, homophone.ReplaceText)
 	}
-	return req
 }

@@ -26,7 +26,7 @@ func TestTextToSpeech(t *testing.T) {
 		t.Fatalf("failed to create new client, received %v", err)
 	}
 
-	req := model.TextToSpeechRequest{
+	req := &model.TextToSpeechRequest{
 		SpeechText:  "你好123",
 		Locale:      model.LocaleZhTW,
 		Gender:      model.GenderFemale,
@@ -69,8 +69,8 @@ func TestSpeechToText(t *testing.T) {
 	defer file.Close()
 
 	buf := new(bytes.Buffer)
-	if _, err := io.Copy(buf, file); err != nil {
-		t.Fatalf("failed to read file: %v", err)
+	if _, cErr := io.Copy(buf, file); cErr != nil {
+		t.Fatalf("failed to read file: %v", cErr)
 	}
 
 	req := model.SpeechToTextReq{
@@ -105,11 +105,11 @@ func TestCorrectHomophones(t *testing.T) {
 		t.Fatalf("failed to create new client, received %v", err)
 	}
 	tests := []struct {
-		input    model.TextToSpeechRequest
+		input    *model.TextToSpeechRequest
 		expected string
 	}{
 		{
-			input: model.TextToSpeechRequest{
+			input: &model.TextToSpeechRequest{
 				SpeechText: "I need to read the lead before I lead the team.",
 				Homophones: []model.Homophones{
 					{TargetText: "read", ReplaceText: "reed"},
@@ -119,7 +119,7 @@ func TestCorrectHomophones(t *testing.T) {
 			expected: "I need to reed the led before I led the team.",
 		},
 		{
-			input: model.TextToSpeechRequest{
+			input: &model.TextToSpeechRequest{
 				SpeechText: "The wind was too strong to wind the sail.",
 				Homophones: []model.Homophones{
 					{TargetText: "wind", ReplaceText: "wīnd"},
@@ -131,8 +131,8 @@ func TestCorrectHomophones(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		resp := az.CorrectHomophones(test.input)
-		if resp.SpeechText != test.expected {
+		az.CorrectHomophones(test.input)
+		if test.input.SpeechText != test.expected {
 			t.Errorf("expected %v, but got %v", test.expected, test.input.SpeechText)
 		}
 	}
