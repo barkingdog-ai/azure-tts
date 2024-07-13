@@ -3,9 +3,7 @@ package api_test
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"io"
-	"mime/multipart"
 	"os"
 	"testing"
 
@@ -42,7 +40,6 @@ func TestTextToSpeech(t *testing.T) {
 	resp, err := az.TextToSpeech(ctx, req)
 	if err != nil {
 		t.Fatalf("TextToSpeech failed: %v", err)
-
 	}
 
 	if resp == nil {
@@ -75,20 +72,12 @@ func TestSpeechToText(t *testing.T) {
 	if _, err := io.Copy(buf, file); err != nil {
 		t.Fatalf("failed to read file: %v", err)
 	}
-	fileStat, err := file.Stat()
-	if err != nil {
-		t.Fatalf("failed to get file stats: %v", err)
-	}
-	fileHeader := &multipart.FileHeader{
-		Filename: fileStat.Name(),
-		Size:     fileStat.Size(),
-	}
+
 	req := model.SpeechToTextReq{
-		File:     fileHeader,
+		Reader:   buf,
 		Language: "zh-TW",
 	}
 
-	fmt.Println("fileHeader: ", fileHeader.Size, fileHeader.Filename)
 	ctx := context.Background()
 	resp, err := az.SpeechToText(ctx, req)
 	if err != nil {

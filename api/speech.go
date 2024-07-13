@@ -50,7 +50,6 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 func (az *AzureTTSClient) SpeechToText(ctx context.Context,
 	request model.SpeechToTextReq,
 ) (*model.SpeechToTextResp, error) {
-
 	url := fmt.Sprintf("%s?language=%s", az.SpeechToTextURL, request.Language)
 
 	payload, err := createFilePayload(request)

@@ -65,6 +65,7 @@ func createFilePayload(request model.SpeechToTextReq) (io.Reader, error) {
 
 	return &buf, nil
 }
+
 func (az *AzureTTSClient) newSTTRequest(ctx context.Context, method, path string,
 	payload io.Reader,
 ) (*http.Request, error) {
