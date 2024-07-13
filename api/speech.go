@@ -25,6 +25,7 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 	pitch, _ := utils.ConvertStringToFloat32(request.Pitch)
 	rateValue := (rate - 1) * 100
 	pitchValue := (pitch - 1) * 50
+	az.CorrectHomophones(request)
 	v := voiceXML(
 		request.SpeechText,
 		request.VoiceName,
@@ -33,8 +34,6 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 		utils.ConvertFloat32ToString(rateValue)+"%",
 		utils.ConvertFloat32ToString(pitchValue)+"%",
 	)
-
-	az.CorrectHomophones(request)
 
 	req, err := az.newTTSRequest(ctx, "POST", az.TextToSpeechURL, bytes.NewBufferString(v), model.Audio16khz32kbitrateMonoMp3)
 	if err != nil {
