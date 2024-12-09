@@ -12,7 +12,7 @@ const (
 	AudioRIFF16khz16kbpsMonoSiren
 	AudioRIFF24khz16bitMonoPcm
 	AudioRAW8Bit8kHzMonoMulaw
-	AudioRAW16Bit16kHzMonoMulaw
+	AudioRAW16Bit16kHzMonoPcm
 	AudioRAW24khz16bitMonoPcm
 	AudioRAW22050hz16bitMonoPcm
 	AudioSsml16khz16bitMonoTts
