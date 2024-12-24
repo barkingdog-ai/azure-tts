@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/barkingdog-ai/azure-tts/model"
 )
@@ -202,9 +204,70 @@ func getResponseObject(rsp *http.Response, v any) error {
 // voiceXML renders the XML payload for the TTS api.
 // For API reference see https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
 func voiceXML(speechText, description string, locale model.Locale, gender model.Gender, rate, pitch string) string {
-	re := regexp.MustCompile(`\b\d+\.\d+\.\d+\.\d+\b`)
+	processedText := speechText
 
-	processedText := re.ReplaceAllStringFunc(speechText, func(match string) string {
+	// 先处理IP地址
+	reIP := regexp.MustCompile(`\b\d+\.\d+\.\d+\.\d+\b`)
+	processedText = reIP.ReplaceAllStringFunc(processedText, func(match string) string {
+		return fmt.Sprintf("<say-as interpret-as=\"characters\">%s</say-as>", match)
+	})
+
+	// 处理Markdown格式的URL，保留描述文本
+	reMarkdownURL := regexp.MustCompile(`\[(.*?)\]\((https?:\/\/[^\s\)]+)\)`)
+	processedText = reMarkdownURL.ReplaceAllString(processedText, "$1")
+
+	// 处理普通URL，将URL转换为可读格式
+	reURL := regexp.MustCompile(`https?:\/\/[^\s]+`)
+	// 用于检测是否为纯IP形式的域名
+	reIPDomain := regexp.MustCompile(`^\d+\.\d+\.\d+\.\d+$`)
+
+	processedText = reURL.ReplaceAllStringFunc(processedText, func(match string) string {
+		// 检查这个URL是否是markdown链接的一部分
+		markdownPattern := fmt.Sprintf(`\[.*?\]\(%s\)`, regexp.QuoteMeta(match))
+		if regexp.MustCompile(markdownPattern).MatchString(speechText) {
+			return match // 如果是markdown链接的一部分，保持原样
+		}
+		// 将URL转换为可读格式，只处理域名部分
+		url := strings.TrimPrefix(match, "http://")
+		url = strings.TrimPrefix(url, "https://")
+		// 只取域名部分（到第一个/之前）
+		if idx := strings.Index(url, "/"); idx != -1 {
+			url = url[:idx]
+		}
+
+		// 如果域名是纯IP形式，则添加say-as标签
+		if reIPDomain.MatchString(url) {
+			return fmt.Sprintf("<say-as interpret-as=\"characters\">%s</say-as>", url)
+		}
+		// 如果域名包含字母，直接返回
+		return url
+	})
+
+	// 处理日期和其他数字序列
+	reDate := regexp.MustCompile(`\b(\d{4}|\d{2})\.\d{1,2}\.\d{1,2}\b`)
+	reNumbers := regexp.MustCompile(`\b\d+\.\d+(\.\d+)*\b`)
+	processedText = reNumbers.ReplaceAllStringFunc(processedText, func(match string) string {
+		// 如果已经包含在say-as标签中，跳过处理
+		if strings.Contains(match, "<say-as") {
+			return match
+		}
+
+		// 检查是否是IP地址格式，如果是则跳过（因为已经处理过）
+		if reIP.MatchString(match) {
+			return match
+		}
+
+		// 检查是否是有效日期格式
+		if reDate.MatchString(match) {
+			parts := strings.Split(match, ".")
+			if len(parts) == 3 {
+				month, _ := strconv.Atoi(parts[1])
+				day, _ := strconv.Atoi(parts[2])
+				if month >= 1 && month <= 12 && day >= 1 && day <= 31 {
+					return match
+				}
+			}
+		}
 		return fmt.Sprintf("<say-as interpret-as=\"characters\">%s</say-as>", match)
 	})
 

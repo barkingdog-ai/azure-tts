@@ -23,7 +23,7 @@ func main() {
 	defer close(az.TokenRefreshDoneCh)
 	ctx := context.Background()
 	req := model.TextToSpeechRequest{
-		SpeechText:  "你好123",
+		SpeechText:  "版本号是8.2.3和2024.13.32",
 		Locale:      model.LocaleZhTW,
 		Gender:      model.GenderFemale,
 		VoiceName:   "zh-TW-HsiaoChenNeural",
