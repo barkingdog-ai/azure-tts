@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"regexp"
 
 	"github.com/barkingdog-ai/azure-tts/model"
 )
@@ -201,5 +202,11 @@ func getResponseObject(rsp *http.Response, v any) error {
 // voiceXML renders the XML payload for the TTS api.
 // For API reference see https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
 func voiceXML(speechText, description string, locale model.Locale, gender model.Gender, rate, pitch string) string {
-	return fmt.Sprintf(ttsAPIXMLPayload, locale, locale, gender, description, rate, pitch, speechText)
+	re := regexp.MustCompile(`\b\d+\.\d+\.\d+\.\d+\b`)
+
+	processedText := re.ReplaceAllStringFunc(speechText, func(match string) string {
+		return fmt.Sprintf("<say-as interpret-as=\"characters\">%s</say-as>", match)
+	})
+
+	return fmt.Sprintf(ttsAPIXMLPayload, locale, locale, gender, description, rate, pitch, processedText)
 }

@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 // AudioOutput types represent the supported audio encoding formats for the text-to-speech endpoint.
 // This type is required when requesting to azuretexttospeech.Synthesize text-to-speed request.
 // Each incorporates a bitrate and encoding type. The Speech service supports 24 kHz, 16 kHz, and 8 kHz audio outputs.
@@ -12,7 +14,7 @@ const (
 	AudioRIFF16khz16kbpsMonoSiren
 	AudioRIFF24khz16bitMonoPcm
 	AudioRAW8Bit8kHzMonoMulaw
-	AudioRAW16Bit16kHzMonoMulaw
+	AudioRAW16Bit16kHzMonoPcm
 	AudioRAW24khz16bitMonoPcm
 	AudioRAW22050hz16bitMonoPcm
 	AudioSsml16khz16bitMonoTts
@@ -42,6 +44,32 @@ func (a AudioOutput) String() string {
 		"audio-24khz-48kbitrate-mono-mp3",
 		"audio-24khz-96kbitrate-mono-mp3",
 	}[a]
+}
+
+func StringToAudioOutput(s string) (AudioOutput, error) {
+	audioMap := map[string]AudioOutput{
+		"riff-8khz-8bit-mono-mulaw":        AudioRIFF8Bit8kHzMonoPCM,
+		"riff-16khz-16bit-mono-pcm":        AudioRIFF16Bit16kHzMonoPCM,
+		"riff-16khz-16kbps-mono-siren":     AudioRIFF16khz16kbpsMonoSiren,
+		"riff-24khz-16bit-mono-pcm":        AudioRIFF24khz16bitMonoPcm,
+		"raw-8khz-8bit-mono-mulaw":         AudioRAW8Bit8kHzMonoMulaw,
+		"raw-16khz-16bit-mono-pcm":         AudioRAW16Bit16kHzMonoPcm,
+		"raw-24khz-16bit-mono-pcm":         AudioRAW24khz16bitMonoPcm,
+		"raw-22050hz-16bit-mono-pcm":       AudioRAW22050hz16bitMonoPcm,
+		"ssml-16khz-16bit-mono-tts":        AudioSsml16khz16bitMonoTts,
+		"audio-16khz-16kbps-mono-siren":    Audio16khz16kbpsMonoSiren,
+		"audio-16khz-32kbitrate-mono-mp3":  Audio16khz32kbitrateMonoMp3,
+		"audio-16khz-64kbitrate-mono-mp3":  Audio6khz64kbitrateMonoMp3,
+		"audio-16khz-128kbitrate-mono-mp3": Audio16khz128kbitrateMonoMp3,
+		"audio-24khz-48kbitrate-mono-mp3":  Audio24khz48kbitrateMonoMp3,
+		"audio-24khz-96kbitrate-mono-mp3":  Audio24khz96kbitrateMonoMp3,
+	}
+
+	if audioOutput, exists := audioMap[s]; exists {
+		return audioOutput, nil
+	}
+
+	return 0, fmt.Errorf("invalid audio output string: %s", s)
 }
 
 // Gender type for the digitized language
