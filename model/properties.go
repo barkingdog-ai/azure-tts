@@ -91,61 +91,62 @@ const (
 type Locale int
 
 const (
-	LocaleArEG Locale = iota // ar-EG
-	LocaleArSA               // ar-SA
-	LocaleBgBG               // bg-BG
-	LocaleCaES               // ca-ES
-	LocaleCsCZ               // cs-CZ
-	LocaleDaDK               // da-DK
-	LocaleDeAT               // de-AT
-	LocaleDeCH               // de-CH
-	LocaleDeDE               // de-DE
-	LocaleElGR               // el-GR
-	LocaleEnAU               // en-AU
-	LocaleEnCA               // en-CA
-	LocaleEnGB               // en-GB
-	LocaleEnIE               // en-IE
-	LocaleEnIN               // en-IN
-	LocaleEnUS               // en-US
-	LocaleEsES               // es-ES
-	LocaleEsMX               // es-MX
-	LocaleEtEE               // et-EE
-	LocaleFiFI               // fi-FI
-	LocaleFrCA               // fr-CA
-	LocaleFrCH               // fr-CH
-	LocaleFrFR               // fr-FR
-	LocaleGaIE               // ga-IE
-	LocaleHeIL               // he-IL
-	LocaleHiIN               // hi-IN
-	LocaleHrHR               // hr-HR
-	LocaleHuHU               // hu-HU
-	LocaleIDID               // id-ID
-	LocaleItIT               // it-IT
-	LocaleJaJP               // ja-JP
-	LocaleKoKR               // ko-KR
-	LocaleLtLT               // lt-LT
-	LocaleLvLV               // lv-LV
-	LocaleMtMT               // mt-MT
-	LocaleMrIN               // mr-IN
-	LocaleMsMY               // ms-MY
-	LocaleNbNO               // nb-NO
-	LocaleNlNL               // nl-NL
-	LocalePlPL               // pl-PL
-	LocalePtBR               // pt-BR
-	LocalePtPT               // pt-PT
-	LocaleRoRO               // ro-RO
-	LocaleRuRU               // ru-RU
-	LocaleSkSK               // sk-SK
-	LocaleSlSI               // sl-SI
-	LocaleSvSE               // sv-SE
-	LocaleTaIN               // ta-IN
-	LocaleTeIN               // te-IN
-	LocaleThTH               // th-TH
-	LocaleTrTR               // tr-TR
-	LocaleViVN               // vi-VN
-	LocaleZhCN               // zh-CN
-	LocaleZhHK               // zh-HK
-	LocaleZhTW               // zh-TW
+	LocaleArEG  Locale = 1  // ar-EG
+	LocaleArSA  Locale = 2  // ar-SA
+	LocaleBgBG  Locale = 3  // bg-BG
+	LocaleCaES  Locale = 4  // ca-ES
+	LocaleCsCZ  Locale = 5  // cs-CZ
+	LocaleDaDK  Locale = 6  // da-DK
+	LocaleDeAT  Locale = 7  // de-AT
+	LocaleDeCH  Locale = 8  // de-CH
+	LocaleDeDE  Locale = 9  // de-DE
+	LocaleElGR  Locale = 10 // el-GR
+	LocaleEnAU  Locale = 11 // en-AU
+	LocaleEnCA  Locale = 12 // en-CA
+	LocaleEnGB  Locale = 13 // en-GB
+	LocaleEnIE  Locale = 14 // en-IE
+	LocaleEnIN  Locale = 15 // en-IN
+	LocaleEnUS  Locale = 16 // en-US
+	LocaleEsES  Locale = 17 // es-ES
+	LocaleEsMX  Locale = 18 // es-MX
+	LocaleEtEE  Locale = 19 // et-EE
+	LocaleFiFI  Locale = 20 // fi-FI
+	LocaleFrCA  Locale = 21 // fr-CA
+	LocaleFrCH  Locale = 22 // fr-CH
+	LocaleFrFR  Locale = 23 // fr-FR
+	LocaleGaIE  Locale = 24 // ga-IE
+	LocaleHeIL  Locale = 25 // he-IL
+	LocaleHiIN  Locale = 26 // hi-IN
+	LocaleHrHR  Locale = 27 // hr-HR
+	LocaleHuHU  Locale = 28 // hu-HU
+	LocaleIDID  Locale = 29 // id-ID
+	LocaleItIT  Locale = 30 // it-IT
+	LocaleJaJP  Locale = 31 // ja-JP
+	LocaleKoKR  Locale = 32 // ko-KR
+	LocaleLtLT  Locale = 33 // lt-LT
+	LocaleLvLV  Locale = 34 // lv-LV
+	LocaleMtMT  Locale = 35 // mt-MT
+	LocaleMrIN  Locale = 36 // mr-IN
+	LocaleMsMY  Locale = 37 // ms-MY
+	LocaleNbNO  Locale = 38 // nb-NO
+	LocaleNlNL  Locale = 39 // nl-NL
+	LocalePlPL  Locale = 40 // pl-PL
+	LocalePtBR  Locale = 41 // pt-BR
+	LocalePtPT  Locale = 42 // pt-PT
+	LocaleRoRO  Locale = 43 // ro-RO
+	LocaleRuRU  Locale = 44 // ru-RU
+	LocaleSkSK  Locale = 45 // sk-SK
+	LocaleSlSI  Locale = 46 // sl-SI
+	LocaleSvSE  Locale = 47 // sv-SE
+	LocaleTaIN  Locale = 48 // ta-IN
+	LocaleTeIN  Locale = 49 // te-IN
+	LocaleThTH  Locale = 50 // th-TH
+	LocaleTrTR  Locale = 51 // tr-TR
+	LocaleViVN  Locale = 52 // vi-VN
+	LocaleZhCN  Locale = 53 // zh-CN
+	LocaleZhHK  Locale = 54 // zh-HK
+	LocaleZhTW  Locale = 55 // zh-TW
+	LocaleFilPH Locale = 56 // fil-PH
 )
 
 // Region references the locations of the availability of standard voices.

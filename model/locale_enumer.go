@@ -5,77 +5,259 @@ package model
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
-const _LocaleName = "ar-EGar-SAbg-BGca-EScs-CZda-DKde-ATde-CHde-DEel-GRen-AUen-CAen-GBen-IEen-INen-USes-ESes-MXet-EEfi-FIfr-CAfr-CHfr-FRga-IEhe-ILhi-INhr-HRhu-HUid-IDit-ITja-JPko-KRlt-LTlv-LVmt-MTmr-INms-MYnb-NOnl-NLpl-PLpt-BRpt-PTro-ROru-RUsk-SKsl-SIsv-SEta-INte-INth-THtr-TRvi-VNzh-CNzh-HKzh-TW"
+const _LocaleName = "ar-EGar-SAbg-BGca-EScs-CZda-DKde-ATde-CHde-DEel-GRen-AUen-CAen-GBen-IEen-INen-USes-ESes-MXet-EEfi-FIfr-CAfr-CHfr-FRga-IEhe-ILhi-INhr-HRhu-HUid-IDit-ITja-JPko-KRlt-LTlv-LVmt-MTmr-INms-MYnb-NOnl-NLpl-PLpt-BRpt-PTro-ROru-RUsk-SKsl-SIsv-SEta-INte-INth-THtr-TRvi-VNzh-CNzh-HKzh-TWfil-PH"
 
-var _LocaleIndex = [...]uint16{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275}
+var _LocaleIndex = [...]uint16{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 281}
+
+const _LocaleLowerName = "ar-egar-sabg-bgca-escs-czda-dkde-atde-chde-deel-gren-auen-caen-gben-ieen-inen-uses-eses-mxet-eefi-fifr-cafr-chfr-frga-iehe-ilhi-inhr-hrhu-huid-idit-itja-jpko-krlt-ltlv-lvmt-mtmr-inms-mynb-nonl-nlpl-plpt-brpt-ptro-roru-rusk-sksl-sisv-seta-inte-inth-thtr-trvi-vnzh-cnzh-hkzh-twfil-ph"
 
 func (i Locale) String() string {
+	i -= 1
 	if i < 0 || i >= Locale(len(_LocaleIndex)-1) {
-		return fmt.Sprintf("Locale(%d)", i)
+		return fmt.Sprintf("Locale(%d)", i+1)
 	}
 	return _LocaleName[_LocaleIndex[i]:_LocaleIndex[i+1]]
 }
 
-var _LocaleValues = []Locale{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54}
+// An "invalid array index" compiler error signifies that the constant values have changed.
+// Re-run the stringer command to generate them again.
+func _LocaleNoOp() {
+	var x [1]struct{}
+	_ = x[LocaleArEG-(1)]
+	_ = x[LocaleArSA-(2)]
+	_ = x[LocaleBgBG-(3)]
+	_ = x[LocaleCaES-(4)]
+	_ = x[LocaleCsCZ-(5)]
+	_ = x[LocaleDaDK-(6)]
+	_ = x[LocaleDeAT-(7)]
+	_ = x[LocaleDeCH-(8)]
+	_ = x[LocaleDeDE-(9)]
+	_ = x[LocaleElGR-(10)]
+	_ = x[LocaleEnAU-(11)]
+	_ = x[LocaleEnCA-(12)]
+	_ = x[LocaleEnGB-(13)]
+	_ = x[LocaleEnIE-(14)]
+	_ = x[LocaleEnIN-(15)]
+	_ = x[LocaleEnUS-(16)]
+	_ = x[LocaleEsES-(17)]
+	_ = x[LocaleEsMX-(18)]
+	_ = x[LocaleEtEE-(19)]
+	_ = x[LocaleFiFI-(20)]
+	_ = x[LocaleFrCA-(21)]
+	_ = x[LocaleFrCH-(22)]
+	_ = x[LocaleFrFR-(23)]
+	_ = x[LocaleGaIE-(24)]
+	_ = x[LocaleHeIL-(25)]
+	_ = x[LocaleHiIN-(26)]
+	_ = x[LocaleHrHR-(27)]
+	_ = x[LocaleHuHU-(28)]
+	_ = x[LocaleIDID-(29)]
+	_ = x[LocaleItIT-(30)]
+	_ = x[LocaleJaJP-(31)]
+	_ = x[LocaleKoKR-(32)]
+	_ = x[LocaleLtLT-(33)]
+	_ = x[LocaleLvLV-(34)]
+	_ = x[LocaleMtMT-(35)]
+	_ = x[LocaleMrIN-(36)]
+	_ = x[LocaleMsMY-(37)]
+	_ = x[LocaleNbNO-(38)]
+	_ = x[LocaleNlNL-(39)]
+	_ = x[LocalePlPL-(40)]
+	_ = x[LocalePtBR-(41)]
+	_ = x[LocalePtPT-(42)]
+	_ = x[LocaleRoRO-(43)]
+	_ = x[LocaleRuRU-(44)]
+	_ = x[LocaleSkSK-(45)]
+	_ = x[LocaleSlSI-(46)]
+	_ = x[LocaleSvSE-(47)]
+	_ = x[LocaleTaIN-(48)]
+	_ = x[LocaleTeIN-(49)]
+	_ = x[LocaleThTH-(50)]
+	_ = x[LocaleTrTR-(51)]
+	_ = x[LocaleViVN-(52)]
+	_ = x[LocaleZhCN-(53)]
+	_ = x[LocaleZhHK-(54)]
+	_ = x[LocaleZhTW-(55)]
+	_ = x[LocaleFilPH-(56)]
+}
+
+var _LocaleValues = []Locale{LocaleArEG, LocaleArSA, LocaleBgBG, LocaleCaES, LocaleCsCZ, LocaleDaDK, LocaleDeAT, LocaleDeCH, LocaleDeDE, LocaleElGR, LocaleEnAU, LocaleEnCA, LocaleEnGB, LocaleEnIE, LocaleEnIN, LocaleEnUS, LocaleEsES, LocaleEsMX, LocaleEtEE, LocaleFiFI, LocaleFrCA, LocaleFrCH, LocaleFrFR, LocaleGaIE, LocaleHeIL, LocaleHiIN, LocaleHrHR, LocaleHuHU, LocaleIDID, LocaleItIT, LocaleJaJP, LocaleKoKR, LocaleLtLT, LocaleLvLV, LocaleMtMT, LocaleMrIN, LocaleMsMY, LocaleNbNO, LocaleNlNL, LocalePlPL, LocalePtBR, LocalePtPT, LocaleRoRO, LocaleRuRU, LocaleSkSK, LocaleSlSI, LocaleSvSE, LocaleTaIN, LocaleTeIN, LocaleThTH, LocaleTrTR, LocaleViVN, LocaleZhCN, LocaleZhHK, LocaleZhTW, LocaleFilPH}
 
 var _LocaleNameToValueMap = map[string]Locale{
-	_LocaleName[0:5]:     0,
-	_LocaleName[5:10]:    1,
-	_LocaleName[10:15]:   2,
-	_LocaleName[15:20]:   3,
-	_LocaleName[20:25]:   4,
-	_LocaleName[25:30]:   5,
-	_LocaleName[30:35]:   6,
-	_LocaleName[35:40]:   7,
-	_LocaleName[40:45]:   8,
-	_LocaleName[45:50]:   9,
-	_LocaleName[50:55]:   10,
-	_LocaleName[55:60]:   11,
-	_LocaleName[60:65]:   12,
-	_LocaleName[65:70]:   13,
-	_LocaleName[70:75]:   14,
-	_LocaleName[75:80]:   15,
-	_LocaleName[80:85]:   16,
-	_LocaleName[85:90]:   17,
-	_LocaleName[90:95]:   18,
-	_LocaleName[95:100]:  19,
-	_LocaleName[100:105]: 20,
-	_LocaleName[105:110]: 21,
-	_LocaleName[110:115]: 22,
-	_LocaleName[115:120]: 23,
-	_LocaleName[120:125]: 24,
-	_LocaleName[125:130]: 25,
-	_LocaleName[130:135]: 26,
-	_LocaleName[135:140]: 27,
-	_LocaleName[140:145]: 28,
-	_LocaleName[145:150]: 29,
-	_LocaleName[150:155]: 30,
-	_LocaleName[155:160]: 31,
-	_LocaleName[160:165]: 32,
-	_LocaleName[165:170]: 33,
-	_LocaleName[170:175]: 34,
-	_LocaleName[175:180]: 35,
-	_LocaleName[180:185]: 36,
-	_LocaleName[185:190]: 37,
-	_LocaleName[190:195]: 38,
-	_LocaleName[195:200]: 39,
-	_LocaleName[200:205]: 40,
-	_LocaleName[205:210]: 41,
-	_LocaleName[210:215]: 42,
-	_LocaleName[215:220]: 43,
-	_LocaleName[220:225]: 44,
-	_LocaleName[225:230]: 45,
-	_LocaleName[230:235]: 46,
-	_LocaleName[235:240]: 47,
-	_LocaleName[240:245]: 48,
-	_LocaleName[245:250]: 49,
-	_LocaleName[250:255]: 50,
-	_LocaleName[255:260]: 51,
-	_LocaleName[260:265]: 52,
-	_LocaleName[265:270]: 53,
-	_LocaleName[270:275]: 54,
+	_LocaleName[0:5]:          LocaleArEG,
+	_LocaleLowerName[0:5]:     LocaleArEG,
+	_LocaleName[5:10]:         LocaleArSA,
+	_LocaleLowerName[5:10]:    LocaleArSA,
+	_LocaleName[10:15]:        LocaleBgBG,
+	_LocaleLowerName[10:15]:   LocaleBgBG,
+	_LocaleName[15:20]:        LocaleCaES,
+	_LocaleLowerName[15:20]:   LocaleCaES,
+	_LocaleName[20:25]:        LocaleCsCZ,
+	_LocaleLowerName[20:25]:   LocaleCsCZ,
+	_LocaleName[25:30]:        LocaleDaDK,
+	_LocaleLowerName[25:30]:   LocaleDaDK,
+	_LocaleName[30:35]:        LocaleDeAT,
+	_LocaleLowerName[30:35]:   LocaleDeAT,
+	_LocaleName[35:40]:        LocaleDeCH,
+	_LocaleLowerName[35:40]:   LocaleDeCH,
+	_LocaleName[40:45]:        LocaleDeDE,
+	_LocaleLowerName[40:45]:   LocaleDeDE,
+	_LocaleName[45:50]:        LocaleElGR,
+	_LocaleLowerName[45:50]:   LocaleElGR,
+	_LocaleName[50:55]:        LocaleEnAU,
+	_LocaleLowerName[50:55]:   LocaleEnAU,
+	_LocaleName[55:60]:        LocaleEnCA,
+	_LocaleLowerName[55:60]:   LocaleEnCA,
+	_LocaleName[60:65]:        LocaleEnGB,
+	_LocaleLowerName[60:65]:   LocaleEnGB,
+	_LocaleName[65:70]:        LocaleEnIE,
+	_LocaleLowerName[65:70]:   LocaleEnIE,
+	_LocaleName[70:75]:        LocaleEnIN,
+	_LocaleLowerName[70:75]:   LocaleEnIN,
+	_LocaleName[75:80]:        LocaleEnUS,
+	_LocaleLowerName[75:80]:   LocaleEnUS,
+	_LocaleName[80:85]:        LocaleEsES,
+	_LocaleLowerName[80:85]:   LocaleEsES,
+	_LocaleName[85:90]:        LocaleEsMX,
+	_LocaleLowerName[85:90]:   LocaleEsMX,
+	_LocaleName[90:95]:        LocaleEtEE,
+	_LocaleLowerName[90:95]:   LocaleEtEE,
+	_LocaleName[95:100]:       LocaleFiFI,
+	_LocaleLowerName[95:100]:  LocaleFiFI,
+	_LocaleName[100:105]:      LocaleFrCA,
+	_LocaleLowerName[100:105]: LocaleFrCA,
+	_LocaleName[105:110]:      LocaleFrCH,
+	_LocaleLowerName[105:110]: LocaleFrCH,
+	_LocaleName[110:115]:      LocaleFrFR,
+	_LocaleLowerName[110:115]: LocaleFrFR,
+	_LocaleName[115:120]:      LocaleGaIE,
+	_LocaleLowerName[115:120]: LocaleGaIE,
+	_LocaleName[120:125]:      LocaleHeIL,
+	_LocaleLowerName[120:125]: LocaleHeIL,
+	_LocaleName[125:130]:      LocaleHiIN,
+	_LocaleLowerName[125:130]: LocaleHiIN,
+	_LocaleName[130:135]:      LocaleHrHR,
+	_LocaleLowerName[130:135]: LocaleHrHR,
+	_LocaleName[135:140]:      LocaleHuHU,
+	_LocaleLowerName[135:140]: LocaleHuHU,
+	_LocaleName[140:145]:      LocaleIDID,
+	_LocaleLowerName[140:145]: LocaleIDID,
+	_LocaleName[145:150]:      LocaleItIT,
+	_LocaleLowerName[145:150]: LocaleItIT,
+	_LocaleName[150:155]:      LocaleJaJP,
+	_LocaleLowerName[150:155]: LocaleJaJP,
+	_LocaleName[155:160]:      LocaleKoKR,
+	_LocaleLowerName[155:160]: LocaleKoKR,
+	_LocaleName[160:165]:      LocaleLtLT,
+	_LocaleLowerName[160:165]: LocaleLtLT,
+	_LocaleName[165:170]:      LocaleLvLV,
+	_LocaleLowerName[165:170]: LocaleLvLV,
+	_LocaleName[170:175]:      LocaleMtMT,
+	_LocaleLowerName[170:175]: LocaleMtMT,
+	_LocaleName[175:180]:      LocaleMrIN,
+	_LocaleLowerName[175:180]: LocaleMrIN,
+	_LocaleName[180:185]:      LocaleMsMY,
+	_LocaleLowerName[180:185]: LocaleMsMY,
+	_LocaleName[185:190]:      LocaleNbNO,
+	_LocaleLowerName[185:190]: LocaleNbNO,
+	_LocaleName[190:195]:      LocaleNlNL,
+	_LocaleLowerName[190:195]: LocaleNlNL,
+	_LocaleName[195:200]:      LocalePlPL,
+	_LocaleLowerName[195:200]: LocalePlPL,
+	_LocaleName[200:205]:      LocalePtBR,
+	_LocaleLowerName[200:205]: LocalePtBR,
+	_LocaleName[205:210]:      LocalePtPT,
+	_LocaleLowerName[205:210]: LocalePtPT,
+	_LocaleName[210:215]:      LocaleRoRO,
+	_LocaleLowerName[210:215]: LocaleRoRO,
+	_LocaleName[215:220]:      LocaleRuRU,
+	_LocaleLowerName[215:220]: LocaleRuRU,
+	_LocaleName[220:225]:      LocaleSkSK,
+	_LocaleLowerName[220:225]: LocaleSkSK,
+	_LocaleName[225:230]:      LocaleSlSI,
+	_LocaleLowerName[225:230]: LocaleSlSI,
+	_LocaleName[230:235]:      LocaleSvSE,
+	_LocaleLowerName[230:235]: LocaleSvSE,
+	_LocaleName[235:240]:      LocaleTaIN,
+	_LocaleLowerName[235:240]: LocaleTaIN,
+	_LocaleName[240:245]:      LocaleTeIN,
+	_LocaleLowerName[240:245]: LocaleTeIN,
+	_LocaleName[245:250]:      LocaleThTH,
+	_LocaleLowerName[245:250]: LocaleThTH,
+	_LocaleName[250:255]:      LocaleTrTR,
+	_LocaleLowerName[250:255]: LocaleTrTR,
+	_LocaleName[255:260]:      LocaleViVN,
+	_LocaleLowerName[255:260]: LocaleViVN,
+	_LocaleName[260:265]:      LocaleZhCN,
+	_LocaleLowerName[260:265]: LocaleZhCN,
+	_LocaleName[265:270]:      LocaleZhHK,
+	_LocaleLowerName[265:270]: LocaleZhHK,
+	_LocaleName[270:275]:      LocaleZhTW,
+	_LocaleLowerName[270:275]: LocaleZhTW,
+	_LocaleName[275:281]:      LocaleFilPH,
+	_LocaleLowerName[275:281]: LocaleFilPH,
+}
+
+var _LocaleNames = []string{
+	_LocaleName[0:5],
+	_LocaleName[5:10],
+	_LocaleName[10:15],
+	_LocaleName[15:20],
+	_LocaleName[20:25],
+	_LocaleName[25:30],
+	_LocaleName[30:35],
+	_LocaleName[35:40],
+	_LocaleName[40:45],
+	_LocaleName[45:50],
+	_LocaleName[50:55],
+	_LocaleName[55:60],
+	_LocaleName[60:65],
+	_LocaleName[65:70],
+	_LocaleName[70:75],
+	_LocaleName[75:80],
+	_LocaleName[80:85],
+	_LocaleName[85:90],
+	_LocaleName[90:95],
+	_LocaleName[95:100],
+	_LocaleName[100:105],
+	_LocaleName[105:110],
+	_LocaleName[110:115],
+	_LocaleName[115:120],
+	_LocaleName[120:125],
+	_LocaleName[125:130],
+	_LocaleName[130:135],
+	_LocaleName[135:140],
+	_LocaleName[140:145],
+	_LocaleName[145:150],
+	_LocaleName[150:155],
+	_LocaleName[155:160],
+	_LocaleName[160:165],
+	_LocaleName[165:170],
+	_LocaleName[170:175],
+	_LocaleName[175:180],
+	_LocaleName[180:185],
+	_LocaleName[185:190],
+	_LocaleName[190:195],
+	_LocaleName[195:200],
+	_LocaleName[200:205],
+	_LocaleName[205:210],
+	_LocaleName[210:215],
+	_LocaleName[215:220],
+	_LocaleName[220:225],
+	_LocaleName[225:230],
+	_LocaleName[230:235],
+	_LocaleName[235:240],
+	_LocaleName[240:245],
+	_LocaleName[245:250],
+	_LocaleName[250:255],
+	_LocaleName[255:260],
+	_LocaleName[260:265],
+	_LocaleName[265:270],
+	_LocaleName[270:275],
+	_LocaleName[275:281],
 }
 
 // LocaleString retrieves an enum value from the enum constants string name.
@@ -84,12 +266,23 @@ func LocaleString(s string) (Locale, error) {
 	if val, ok := _LocaleNameToValueMap[s]; ok {
 		return val, nil
 	}
+
+	if val, ok := _LocaleNameToValueMap[strings.ToLower(s)]; ok {
+		return val, nil
+	}
 	return 0, fmt.Errorf("%s does not belong to Locale values", s)
 }
 
 // LocaleValues returns all values of the enum
 func LocaleValues() []Locale {
 	return _LocaleValues
+}
+
+// LocaleStrings returns a slice of all String values of the enum
+func LocaleStrings() []string {
+	strs := make([]string, len(_LocaleNames))
+	copy(strs, _LocaleNames)
+	return strs
 }
 
 // IsALocale returns "true" if the value is listed in the enum definition. "false" otherwise
