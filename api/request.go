@@ -203,7 +203,7 @@ func getResponseObject(rsp *http.Response, v any) error {
 
 // voiceXML renders the XML payload for the TTS api.
 // For API reference see https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
-func voiceXML(speechText, description string, locale model.Locale, gender model.Gender, rate, pitch string) string {
+func voiceXML(speechText, description string, locale model.Locale, gender model.Gender, rate, pitch string, style *model.TTSStyle) string {
 	processedText := speechText
 
 	// 先处理IP地址
@@ -270,6 +270,24 @@ func voiceXML(speechText, description string, locale model.Locale, gender model.
 		}
 		return fmt.Sprintf("<say-as interpret-as=\"characters\">%s</say-as>", match)
 	})
+
+	if style != nil {
+		// 使用帶風格的 SSML 模板
+		// 如果 rate 和 pitch 為 0%，則不包含 prosody 標籤
+		if rate == "0%" && pitch == "0%" {
+			styledPayload := `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="%s"><voice name="%s"><mstts:express-as style="%s" styledegree="%s">%s</mstts:express-as></voice></speak>`
+			return fmt.Sprintf(styledPayload, locale, description, style.Style, style.StyleDegree, processedText)
+		} else {
+			styledPayload := `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="%s"><voice name="%s"><mstts:express-as style="%s" styledegree="%s"><prosody rate="%s" pitch="%s">%s</prosody></mstts:express-as></voice></speak>`
+			return fmt.Sprintf(styledPayload, locale, description, style.Style, style.StyleDegree, rate, pitch, processedText)
+		}
+	}
+
+	// 如果 rate 和 pitch 為 0%，則不包含 prosody 標籤
+	if rate == "0%" && pitch == "0%" {
+		basicPayload := `<speak version='1.0' xml:lang='%s'><voice xml:lang='%s' xml:gender='%s' name='%s'>%s</voice></speak>`
+		return fmt.Sprintf(basicPayload, locale, locale, gender, description, processedText)
+	}
 
 	return fmt.Sprintf(ttsAPIXMLPayload, locale, locale, gender, description, rate, pitch, processedText)
 }
