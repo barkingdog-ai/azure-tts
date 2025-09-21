@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/barkingdog-ai/azure-tts"
+	azuretts "github.com/barkingdog-ai/azure-tts"
 	"github.com/barkingdog-ai/azure-tts/model"
 )
 
@@ -67,6 +67,7 @@ func main() {
 	}
 
 	voiceName := "zh-TW-HsiaoChenNeural"
+	locale := "zh-TW"
 
 	for _, example := range examples {
 		fmt.Printf("正在生成: %s\n", example.name)

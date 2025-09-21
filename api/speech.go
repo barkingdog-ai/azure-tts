@@ -33,6 +33,7 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 		request.Gender,
 		utils.ConvertFloat32ToString(rateValue)+"%",
 		utils.ConvertFloat32ToString(pitchValue)+"%",
+		request.Style,
 	)
 
 	req, err := az.newTTSRequest(ctx, "POST", az.TextToSpeechURL, bytes.NewBufferString(v), request.AudioOutput)

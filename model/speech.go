@@ -4,6 +4,11 @@ import (
 	"io"
 )
 
+type TTSStyle struct {
+	Style       string `json:"style"`       // cheerful, friendly, chat, etc.
+	StyleDegree string `json:"style_degree"` // 1-2
+}
+
 type TextToSpeechRequest struct {
 	SpeechText  string
 	Locale      Locale
@@ -13,6 +18,7 @@ type TextToSpeechRequest struct {
 	Rate        string
 	Pitch       string
 	Homophones  []Homophones
+	Style       *TTSStyle // 新增風格選項
 }
 
 type Homophones struct {
