@@ -21,6 +21,12 @@ func (az *AzureTTSClient) TextToSpeech(ctx context.Context,
 	request *model.TextToSpeechRequest,
 ) ([]byte, error) {
 	respData := make([]byte, 0)
+
+	// 驗證必要參數
+	if request.SpeechText == "" {
+		return respData, fmt.Errorf("speech text cannot be empty")
+	}
+
 	rate, _ := utils.ConvertStringToFloat32(request.Rate)
 	pitch, _ := utils.ConvertStringToFloat32(request.Pitch)
 	rateValue := (rate - 1) * 100

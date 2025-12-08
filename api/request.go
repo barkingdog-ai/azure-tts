@@ -204,6 +204,23 @@ func getResponseObject(rsp *http.Response, v any) error {
 // voiceXML renders the XML payload for the TTS api.
 // For API reference see https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-text-to-speech#sample-request
 func voiceXML(speechText, description string, locale model.Locale, gender model.Gender, rate, pitch string, style *model.TTSStyle) string {
+	// 確保 description (voice name) 不為空，否則設定預設值
+	if description == "" {
+		// 根據 locale 設定預設語音
+		switch locale {
+		case model.LocaleZhTW:
+			description = "zh-TW-HsiaoChenNeural"
+		case model.LocaleZhCN:
+			description = "zh-CN-XiaoxiaoNeural"
+		case model.LocaleEnUS:
+			description = "en-US-JennyNeural"
+		case model.LocaleJaJP:
+			description = "ja-JP-NanamiNeural"
+		default:
+			description = "zh-TW-HsiaoChenNeural" // 全局預設值
+		}
+	}
+
 	processedText := speechText
 
 	// 先处理IP地址
