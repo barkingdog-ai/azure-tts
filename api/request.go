@@ -44,7 +44,13 @@ func (az *AzureTTSClient) newTTSRequest(ctx context.Context,
 	}
 	req.Header.Set("X-Microsoft-OutputFormat", audioOutput.String())
 	req.Header.Set("Content-Type", "application/ssml+xml")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", az.AccessToken))
+	// Use subscription key instead of bearer token to avoid "header too long" errors
+	// Azure TTS supports both authentication methods, but subscription key is more reliable
+	if az.SubscriptionKey != "" {
+		req.Header.Set("Ocp-Apim-Subscription-Key", az.SubscriptionKey)
+	} else {
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", az.AccessToken))
+	}
 	req.Header.Set("User-Agent", "azuretts")
 
 	return req, nil
