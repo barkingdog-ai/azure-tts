@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-const _LocaleName = "ar-EGar-SAbg-BGca-EScs-CZda-DKde-ATde-CHde-DEel-GRen-AUen-CAen-GBen-IEen-INen-USes-ESes-MXet-EEfi-FIfr-CAfr-CHfr-FRga-IEhe-ILhi-INhr-HRhu-HUid-IDit-ITja-JPko-KRlt-LTlv-LVmt-MTmr-INms-MYnb-NOnl-NLpl-PLpt-BRpt-PTro-ROru-RUsk-SKsl-SIsv-SEta-INte-INth-THtr-TRvi-VNzh-CNzh-HKzh-TWfil-PHta-MY"
+const _LocaleName = "ar-EGar-SAbg-BGca-EScs-CZda-DKde-ATde-CHde-DEel-GRen-AUen-CAen-GBen-IEen-INen-USes-ESes-MXet-EEfi-FIfr-CAfr-CHfr-FRga-IEhe-ILhi-INhr-HRhu-HUid-IDit-ITja-JPko-KRlt-LTlv-LVmt-MTmr-INms-MYnb-NOnl-NLpl-PLpt-BRpt-PTro-ROru-RUsk-SKsl-SIsv-SEta-INte-INth-THtr-TRvi-VNzh-CNzh-HKzh-TWfil-PHta-MYkm-KH"
 
-var _LocaleIndex = [...]uint16{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 281, 286}
+var _LocaleIndex = [...]uint16{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 281, 286, 291}
 
-const _LocaleLowerName = "ar-egar-sabg-bgca-escs-czda-dkde-atde-chde-deel-gren-auen-caen-gben-ieen-inen-uses-eses-mxet-eefi-fifr-cafr-chfr-frga-iehe-ilhi-inhr-hrhu-huid-idit-itja-jpko-krlt-ltlv-lvmt-mtmr-inms-mynb-nonl-nlpl-plpt-brpt-ptro-roru-rusk-sksl-sisv-seta-inte-inth-thtr-trvi-vnzh-cnzh-hkzh-twfil-phta-my"
+const _LocaleLowerName = "ar-egar-sabg-bgca-escs-czda-dkde-atde-chde-deel-gren-auen-caen-gben-ieen-inen-uses-eses-mxet-eefi-fifr-cafr-chfr-frga-iehe-ilhi-inhr-hrhu-huid-idit-itja-jpko-krlt-ltlv-lvmt-mtmr-inms-mynb-nonl-nlpl-plpt-brpt-ptro-roru-rusk-sksl-sisv-seta-inte-inth-thtr-trvi-vnzh-cnzh-hkzh-twfil-phta-mykm-kh"
 
 func (i Locale) String() string {
 	i -= 1
@@ -83,9 +83,10 @@ func _LocaleNoOp() {
 	_ = x[LocaleZhTW-(55)]
 	_ = x[LocaleFilPH-(56)]
 	_ = x[LocaleTaMY-(57)]
+	_ = x[LocaleKmKH-(58)]
 }
 
-var _LocaleValues = []Locale{LocaleArEG, LocaleArSA, LocaleBgBG, LocaleCaES, LocaleCsCZ, LocaleDaDK, LocaleDeAT, LocaleDeCH, LocaleDeDE, LocaleElGR, LocaleEnAU, LocaleEnCA, LocaleEnGB, LocaleEnIE, LocaleEnIN, LocaleEnUS, LocaleEsES, LocaleEsMX, LocaleEtEE, LocaleFiFI, LocaleFrCA, LocaleFrCH, LocaleFrFR, LocaleGaIE, LocaleHeIL, LocaleHiIN, LocaleHrHR, LocaleHuHU, LocaleIDID, LocaleItIT, LocaleJaJP, LocaleKoKR, LocaleLtLT, LocaleLvLV, LocaleMtMT, LocaleMrIN, LocaleMsMY, LocaleNbNO, LocaleNlNL, LocalePlPL, LocalePtBR, LocalePtPT, LocaleRoRO, LocaleRuRU, LocaleSkSK, LocaleSlSI, LocaleSvSE, LocaleTaIN, LocaleTeIN, LocaleThTH, LocaleTrTR, LocaleViVN, LocaleZhCN, LocaleZhHK, LocaleZhTW, LocaleFilPH, LocaleTaMY}
+var _LocaleValues = []Locale{LocaleArEG, LocaleArSA, LocaleBgBG, LocaleCaES, LocaleCsCZ, LocaleDaDK, LocaleDeAT, LocaleDeCH, LocaleDeDE, LocaleElGR, LocaleEnAU, LocaleEnCA, LocaleEnGB, LocaleEnIE, LocaleEnIN, LocaleEnUS, LocaleEsES, LocaleEsMX, LocaleEtEE, LocaleFiFI, LocaleFrCA, LocaleFrCH, LocaleFrFR, LocaleGaIE, LocaleHeIL, LocaleHiIN, LocaleHrHR, LocaleHuHU, LocaleIDID, LocaleItIT, LocaleJaJP, LocaleKoKR, LocaleLtLT, LocaleLvLV, LocaleMtMT, LocaleMrIN, LocaleMsMY, LocaleNbNO, LocaleNlNL, LocalePlPL, LocalePtBR, LocalePtPT, LocaleRoRO, LocaleRuRU, LocaleSkSK, LocaleSlSI, LocaleSvSE, LocaleTaIN, LocaleTeIN, LocaleThTH, LocaleTrTR, LocaleViVN, LocaleZhCN, LocaleZhHK, LocaleZhTW, LocaleFilPH, LocaleTaMY, LocaleKmKH}
 
 var _LocaleNameToValueMap = map[string]Locale{
 	_LocaleName[0:5]:          LocaleArEG,
@@ -202,6 +203,8 @@ var _LocaleNameToValueMap = map[string]Locale{
 	_LocaleLowerName[275:281]: LocaleFilPH,
 	_LocaleName[281:286]:      LocaleTaMY,
 	_LocaleLowerName[281:286]: LocaleTaMY,
+	_LocaleName[286:291]:      LocaleKmKH,
+	_LocaleLowerName[286:291]: LocaleKmKH,
 }
 
 var _LocaleNames = []string{
@@ -262,6 +265,7 @@ var _LocaleNames = []string{
 	_LocaleName[270:275],
 	_LocaleName[275:281],
 	_LocaleName[281:286],
+	_LocaleName[286:291],
 }
 
 // LocaleString retrieves an enum value from the enum constants string name.

@@ -148,6 +148,7 @@ const (
 	LocaleZhTW  Locale = 55 // zh-TW
 	LocaleFilPH Locale = 56 // fil-PH
 	LocaleTaMY  Locale = 57 // ta-MY
+	LocaleKmKH  Locale = 58 // km-KH
 )
 
 // Region references the locations of the availability of standard voices.
